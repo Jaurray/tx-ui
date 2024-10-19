@@ -14,11 +14,11 @@
 
 **If this project is helpful to you, you may wish to give it a**:star2:
 
-<p align="left">
+<!--<p align="left">
   <a href="https://buymeacoffee.com/mhsanaei" target="_blank">
     <img src="./media/buymeacoffe.png" alt="Image">
   </a>
-</p>
+</p>-->
 
 
 ## Install & Upgrade
