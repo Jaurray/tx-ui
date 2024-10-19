@@ -100,3 +100,19 @@ type Client struct {
 	SubID      string `json:"subId" form:"subId"`
 	Reset      int    `json:"reset" form:"reset"`
 }
+
+type Wallet struct {
+	Id        int     `json:"id" gorm:"primaryKey;autoIncrement"`
+	UserId    int     `json:"userId" gorm:"index"` // ارتباط با کاربر
+	Balance   float64 `json:"balance"` // موجودی کیف پول
+	CreatedAt time.Time `json:"createdAt"` // تاریخ ایجاد
+	UpdatedAt time.Time `json:"updatedAt"` // تاریخ آخرین به‌روزرسانی
+}
+
+type Transaction struct {
+	Id        int       `json:"id" gorm:"primaryKey;autoIncrement"`
+	WalletId  int       `json:"walletId" gorm:"index"` // ارتباط با کیف پول
+	Amount    float64   `json:"amount"` // مقدار تراکنش
+	Type      string    `json:"type"` // نوع تراکنش (واریز یا برداشت)
+	CreatedAt time.Time `json:"createdAt"` // تاریخ تراکنش
+}
