@@ -133,7 +133,8 @@
 
 <body>
 <a-layout id="app" v-cloak :class="themeSwitcher.currentTheme">
-  <a-sidebar></a-sidebar>
+  <a-sidebar v-if="user.role === 'administrator'"></a-sidebar>
+	<a-headbar v-if="user.role != 'administrator'" ></a-headbar>
   <a-layout id="content-layout">
     <a-layout-content>
       <a-spin :spinning="spinning" :delay="500" tip='{{ i18n "loading"}}'>
@@ -145,7 +146,7 @@
             show-icon closable>
           </a-alert>
         </transition>
-        <transition name="list" appear>
+        <transition  name="list" v-if="user.role === 'administrator'" appear>
           <a-card size="small" :style="{ padding: '16px' }" hoverable>
             <a-row>
               <a-col :sm="12" :md="6">
@@ -211,7 +212,7 @@
         </transition>
         <transition name="list" appear>
           <a-card hoverable>
-            <template #title>
+            <template v-if="user.role === 'administrator'" #title>
               <a-space direction="horizontal">
                 <a-button type="primary" icon="plus" @click="openAddInbound">
                   <template v-if="!isMobile">{{ i18n "pages.inbounds.addInbound" }}</template>
