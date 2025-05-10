@@ -229,7 +229,7 @@ func updateTgbotSetting(tgBotToken string, tgBotChatid string, tgBotRuntime stri
 	}
 }
 
-func updateSetting(port int, username string, password string, webBasePath string, listenIP string) {
+func updateSetting(port int, username string, password string, webBasePath string, listenIP string, role string) {
 	err := database.InitDB(config.GetDBPath())
 	if err != nil {
 		fmt.Println("Database initialization failed:", err)
@@ -239,6 +239,14 @@ func updateSetting(port int, username string, password string, webBasePath strin
 	settingService := service.SettingService{}
 	userService := service.UserService{}
 
+	if role != "" {
+	    err := userService.UpdateUserRole(username, role)
+	    if err != nil {
+	        fmt.Println("Failed to update user role:", err)
+	    } else {
+	        fmt.Println("User role updated successfully")
+	    }
+	}
 	if port > 0 {
 		err := settingService.SetPort(port)
 		if err != nil {
@@ -373,6 +381,7 @@ func main() {
 	var reset bool
 	var show bool
 	var getCert bool
+	var role string
 	settingCmd.BoolVar(&reset, "reset", false, "Reset all settings")
 	settingCmd.BoolVar(&show, "show", false, "Display current settings")
 	settingCmd.IntVar(&port, "port", 0, "Set panel port number")
@@ -388,7 +397,8 @@ func main() {
 	settingCmd.StringVar(&tgbotRuntime, "tgbotRuntime", "", "Set cron time for Telegram bot notifications")
 	settingCmd.StringVar(&tgbotchatid, "tgbotchatid", "", "Set chat ID for Telegram bot notifications")
 	settingCmd.BoolVar(&enabletgbot, "enabletgbot", false, "Enable notifications via Telegram bot")
-
+	settingCmd.StringVar(&role, "role", "", "Set user role")
+	
 	oldUsage := flag.Usage
 	flag.Usage = func() {
 		oldUsage()
