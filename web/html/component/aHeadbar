@@ -1,0 +1,85 @@
+{{define "component/headbar/content"}}
+<template>
+  <div class="ant-headbar">
+    <div class="headbar-left">
+      <!-- اینجا می‌تونی لوگو یا عنوان سایت بذاری -->
+    </div>
+    <div class="headbar-right">
+      <span class="balance">{{ balance }} {{ currency }}</span>
+      <a-dropdown>
+        <div class="profile" @click="handleDropdownClick">
+          <a-avatar :src="user.avatar" size="large" />
+          <span class="username" v-text="user.name"></span>
+        </div>
+        <a-menu slot="overlay">
+          <a-menu-item @click="goToProfile">{{ i18n "menu.profile" }}</a-menu-item>
+          <a-menu-item @click="changePassword">{{ i18n "menu.change_password" }}</a-menu-item>
+          <a-menu-item @click="logout">{{ i18n "menu.logout" }}</a-menu-item>
+        </a-menu>
+      </a-dropdown>
+    </div>
+  </div>
+</template>
+{{end}}
+
+{{define "component/aHeadbar"}}
+<style>
+  .ant-headbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    height: 64px;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .headbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 8px;
+  }
+
+  .balance {
+    font-weight: bold;
+    color: #1890ff;
+  }
+</style>
+
+<script>
+  Vue.component('a-headbar', {
+    data() {
+      return {
+        user: {
+          name: '{{ .user.name }}',
+          avatar: '{{ .user.avatar_url }}'
+        },
+        balance: '{{ .user.balance }}',
+        currency: '{{ .user.currency }}'
+      }
+    },
+    methods: {
+      goToProfile() {
+        location.href = '{{ .base_path }}panel/profile';
+      },
+      changePassword() {
+        location.href = '{{ .base_path }}panel/change-password';
+      },
+      logout() {
+        location.href = '{{ .base_path }}logout/';
+      },
+      handleDropdownClick() {
+        // optional: handle any UI toggle
+      }
+    },
+    template: `{{template "component/headbar/content"}}`
+  });
+</script>
+{{end}}
